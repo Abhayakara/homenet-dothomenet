@@ -90,7 +90,7 @@
             <t>Authoritative DNS Servers SHOULD recognize such names as special-use and SHOULD NOT, by default, attempt to look up NS records for these names. Servers that are part of a home network or providing name resolution services for a home network MAY be configured to act as authoritative for the whole top-level domain or a part of it.</t>
 
             <!-- DNS Server Operators: -->
-            <t>DNS server operators SHOULD NOT attempt to configure DNS servers to act as authoriative for any name ending in '.homenet'.</t>
+            <t>DNS server operators should not configure DNS servers to act as authoritative for any name ending in '.homenet'.</t>
 
             <!-- DNS Registries/Registrars: -->
             <t>DNS Registries/Registrars MUST NOT grant requests to register '.homenet' in the normal way to any person or entity.  '.homenet' is registered in perpetuity to IANA:
@@ -115,7 +115,7 @@
         </list>
         NEW: <list style="empty">
             <t>Names and unqualified zones are used in an HNCP network to provide naming and service discovery with local significance.  A network-wide zone is appended to all single labels or unqualified zones in order to qualify them. ".homenet" is the default; however, an administrator MAY configure the announcement of a Domain-Name TLV (Section 10.6) for the network to use a different one.  In case multiple are announced, the domain of the node with the greatest node identifier takes precedence.</t>
-            <t>The '.homenet' special-use name does not require a special resolution protocol.  Names for which the rightmost non-terminal label is 'homenet' are resolved using the DNS protocol <xref target="RFC1035"/>.  The handling of these names is specified in [THIS].</t>
+            <t>The '.homenet' special-use name does not require a special resolution protocol.  Names for which the rightmost non-terminal label is 'homenet' are resolved using the DNS protocol <xref target="RFC1035"/>.  The configuration of name resolution for these names is done using HNCP.  The resolution of these names is specified in [THIS].</t>
         </list></t>
     </section>
 
