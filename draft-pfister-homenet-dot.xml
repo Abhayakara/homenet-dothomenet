@@ -4,6 +4,7 @@
 
 <rfc ipr="trust200902"
     docName="draft-pfister-homenet-dot-00"
+    updates="RFC7788"
     category="std">
 
 <?rfc toc="yes"?> <?rfc symrefs="yes"?> <?rfc autobreaks="yes"?>
@@ -22,6 +23,21 @@
 <country>France</country>
 </postal>
 <email>pierre.pfister@darou.fr</email>
+</address>
+</author>
+
+<author initials="T" surname="Lemon" fullname="Ted Lemon">
+<organization>Nominum, Inc.</organization>
+<address>
+<postal>
+<street>800 Bridge Parkway</street>
+<city>Redwood City</city>
+<region>California</region>
+<country>United States of America</country>
+<code>94065</code>
+</postal>
+<phone>+1 650 381 6000</phone>
+<email>ted.lemon@nominum.com</email>
 </address>
 </author>
 
@@ -77,8 +93,8 @@
             <!-- <t>DNS server operators MUST NOT attempt to configure DNS servers to act as authoritative for any of these names.  [[ TODO - AS112 delegation ]] </t> -->
 
             <!-- DNS Registries/Registrars: -->
-            <t>DNS Registries/Registrars MUST NOT grant requests to register '.homenet' in the normal way to any person or entity.  '.homenet' is registered in perpetuity to IANA:</t>
-            <artwork>
+            <t>DNS Registries/Registrars MUST NOT grant requests to register '.homenet' in the normal way to any person or entity.  '.homenet' is registered in perpetuity to IANA:
+            <figure><artwork>
         Domain Name: HOMENET
         Registrar: RESERVED-INTERNET ASSIGNED NUMBERS AUTHORITY
         Whois Server: whois.iana.org
@@ -87,7 +103,7 @@
         Name Server: B.IANA-SERVERS.NET
         Status: clientDeleteProhibited
         Status: clientTransferProhibited
-        Status: clientUpdateProhibited</artwork>
+        Status: clientUpdateProhibited</artwork></figure></t>
         </list>
     </t>
 </section>
@@ -99,7 +115,7 @@
         </list>
         NEW: <list style="empty">
             <t>Names and unqualified zones are used in an HNCP network to provide naming and service discovery with local significance.  A network-wide zone is appended to all single labels or unqualified zones in order to qualify them. ".homenet" is the default; however, an administrator MAY configure the announcement of a Domain-Name TLV (Section 10.6) for the network to use a different one.  In case multiple are announced, the domain of the node with the greatest node identifier takes precedence.</t>
-            <t>The '.homenet' special-use name does not require a special resolution protocol.  Names for which the rightmost non-terminal label is 'homenet' are resolved using the DNS protocol <xref target="RFC1035"/>.  The handling of these names is specified in <xref target="I-D.ietf-homenet-dot"/>.
+            <t>The '.homenet' special-use name does not require a special resolution protocol.  Names for which the rightmost non-terminal label is 'homenet' are resolved using the DNS protocol <xref target="RFC1035"/>.  The handling of these names is specified in [THIS].</t>
         </list></t>
     </section>
 
@@ -109,8 +125,12 @@
 </section>
 
 <section title="IANA Considerations">
-    <t>IANA is requested to record the top-level domain ".homenet" in the Special-Use Domain Names registry [SUDN].</t>
+    <t>IANA is requested to record the top-level domain ".homenet" in the Special-Use Domain Names registry <xref target="SUDN"/>.</t>
     <t>IANA is reminded that an insecure delegation for these zones is required for compliance with <xref target="RFC6303"/> to break the DNSSEC chain of trust.</t>
+</section>
+
+<section title="RFC Editor Notes">
+    <t>This document updates RFC7788 in a way that adds a new reference from that document to this document.   The text of the update that reads [THIS] should be replaced with a reference to this document in its final RFC form.</t>
 </section>
 
 <section title="Acknowledgments">
@@ -131,7 +151,6 @@
   <?rfc include="reference.RFC.1035.xml"?>
   <?rfc include="reference.RFC.7368.xml"?>
   <?rfc include="reference.RFC.7788.xml"?>
-  <?rfc include="I-D.ietf-homenet-dot"?>
   <reference anchor="ICANN1" target="https://www.icann.org/en/system/files/files/resolutions-new-gtld-annex-1-07oct13-en.pdf">
       <front>
           <title>New gTLD Collision Risk Mitigation</title>
