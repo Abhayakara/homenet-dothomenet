@@ -126,7 +126,7 @@
 
 <section title="IANA Considerations">
     <t>IANA is requested to record the top-level domain ".homenet" in the Special-Use Domain Names registry <xref target="SUDN"/>.</t>
-    <t>IANA is reminded that an insecure delegation for these zones is required for compliance with <xref target="RFC6303"/> to break the DNSSEC chain of trust.</t>
+    <t>IANA is requested to set up insecure delegation for '.homenet' in the root zone pointing to the AS112 service <xref target="RFC7535"/>, to break the DNSSEC chain of trust.</t>
 </section>
 
 <section title="RFC Editor Notes">
@@ -144,6 +144,7 @@
 <references title="Normative References">
   <?rfc include="reference.RFC.6303.xml"?>
   <?rfc include="reference.RFC.6761.xml"?>
+  <?rfc include="reference.RFC.7535.xml"?>
   <?rfc include="reference.I-D.ietf-homenet-redact"?>
 </references>
 
