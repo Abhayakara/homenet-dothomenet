@@ -33,7 +33,7 @@
 <keyword>.homenet</keyword>
 
 <abstract>
-    <t>This document specifies the behavior that is expected from the Domain Name System with regard to DNS queries for names ending with '.homenet.', thereby defining this top-level domain as a special-use domain name <xref target="RFC6761"/>. The '.homenet' top-level domain intends to replace '.home' which was originally proposed in <xref target="RFC7788"/> as default domain-name for home networks.</t>
+    <t>This document specifies the behavior that is expected from the Domain Name System with regard to DNS queries for names ending with '.homenet.', and designates this top-level domain as a special-use domain name . The '.homenet' top-level domain intends to replace '.home' which was originally specified in Home Networking Control Protocol (HNCP) as the default domain name for home networks.</t>
 </abstract>
 
 </front>
@@ -41,17 +41,17 @@
     
     
 <section anchor="intro" title="Introduction">
-    <t>Users and devices within a home network require other devices to be identified by names that are unique within the boundaries of the home network <xref target="RFC7368"/>. The naming mechanism also needs to function without configuration from the user, and keep functioning in case of upstream connexion failure. It is therefore expected that home network routers and devices will derive their own names from one or multiple domain-names that are assigned to the home network. Such domain names could be assigned by the service providers, although this would certainly lead to complicated names (e.g., 'cstmr6372514.isp-foo.com.'), or be reserved and configured by an educated user. But in the case of upstream connexion failure, or when the user ignores how to reserve and configure a domain name, or does not care enough to do it, a default name with local scope needs to be used.</t>
+    <t>Users and devices within a home network require other devices to be identified by names that are unique within the boundaries of the home network <xref target="RFC7368"/>. The naming mechanism also needs to function without configuration from the user. While it is conceivable that this could be done through a delegation from the ISP, homenets must function without that delegation.   A default name with a scope limited to each individual homenet needs to be used.</t>
     
-    <t>The '.homenet' top-level domain intends to replace '.home' which was originally proposed in <xref target="RFC7788"/> as default domain-name for home networks. '.home' would certainly be the most user-friendly option, but evidence indicates that '.home' queries frequently leak out and reach the root name servers <xref target="ICANN1"/> <xref target="ICANN2"/>. This document is to be bundled with another internet draft updating <xref target="RFC7788"/> and deprecating the use of the '.home' TLD, replaced by '.homenet'.</t>
+    <t>The '.homenet' top-level domain replaces '.home' which was specified in <xref target="RFC7788"/> as the default domain-name for home networks. '.home' would certainly be the most user-friendly option, but evidence indicates that '.home' queries frequently leak out and reach the root name servers <xref target="ICANN1"/> <xref target="ICANN2"/>. As a result, the use of '.home' has been deprecated; this document updates <xref target="RFC7788"/> to replace '.home' with '.homenet', while another document, <xref target="I-D.ietf-homenet-redact"/> deprecates the use of the '.home' TLD.</t>
 
-    <t>This document registers the top-level domain '.homenet.' as a special-use domain name <xref target="RFC6761"/> and specifies the behavior that is expected from the Domain Name System with regard to such DNS queries. Records for names ending with '.homenet.' are of local significance within a home network, meaning that identical queries may result in different results from one home network to another.</t>
+    <t>This document registers the top-level domain '.homenet.' as a special-use domain name <xref target="RFC6761"/> and specifies the behavior that is expected from the Domain Name System with regard to DNS queries for names whose rightmost non-terminal label is 'homenet'.  Queries for names ending with '.homenet.' are of local significance within the scope of a home network, meaning that identical queries will result in different results from one home network to another.   In other words, a name ending in '.homenet' is not globally unique.</t>
 </section>
 
 <section anchor="guidance" title="General Guidance">
-    <t>The top-level domain name '.homenet.' is to be used for naming within a home network. Names ending with '.homenet.' MUST refer to services that are either located within a home network (e.g., a printer, or a toaster), or only reachable from within the home network (e.g., a web server hosted by the service provider and providing a service that is specific to the home).</t>
-    <t>DNS queries for names ending with '.homenet.' MUST NOT be sent outside of the logical boundaries of the home network. Which means that, by default, such queries MUST NOT be sent outside of the network boundaries of the home network, but home network devices MAY be configured in order to send such queries to DNS servers located outside of the home network when the DNS server is capable of responding with values that are specific to the network where the query is coming from.</t>
-    <t>Although home networks most often provide one or multiple service discovery mechanisms, it is still expected that some users will see, remember, and sometimes even type, names ending with '.homenet'. It is therefore desireable that users identify the top-level domain and associate it with the fact that the service they are connected to is specific to the home network they are connected in. But, the presence of this top-level domain name MUST NOT be considered as improving the security of the connexion in any way.</t>
+    <t>The top-level domain name '.homenet.' is to be used for naming within a home network. Names ending with '.homenet.' MUST refer to services that are located within a home network (e.g., a printer, or a toaster).</t>
+    <t>DNS queries for names ending with '.homenet.' are resolved using local resolvers on the homenet.   Such queries MUST NOT be recursively forwarded to servers outside the scope of the home network.</t>
+    <t>Although home networks most often provide one or more service discovery mechanisms, it is still expected that some users will see, remember, and sometimes even type, names ending with '.homenet'. It is therefore desireable that users identify the top-level domain and understand that using it expresses the intention to connect to a service that is specific to the home network to which they are connected.  Enforcing the fulfillment of this intention is out of scope for this document.</t>
 </section>
 
 <section anchor="considerations" title="Domain Name Reservation Considerations">
@@ -59,43 +59,62 @@
 
         <list style="numbers">
             <!-- Users -->
-            <t>Users MAY use, type or remember names ending with '.homenet.' just like any other fully qualified domain names. Users SHOULD recognize the top-level domain and understand that its presence at the end of a Fully Qualified Domain Name (FQDN) imply that the service they are reaching is associated with the home network they are connected in. In particular, users SHOULD understand that a single name (e.g. www.homenet) may connect them to different services when connected within different homes.</t>
+            <t>Users can use names ending with '.homenet.' just as they would any other domain name. The '.homenet' name is chosen to be readily recognized by users as signifying that the name is addressing a service on the homenet to which the user's device is connected.</t>
 
             <!-- Application Software -->
-            <t>Applications SHOULD treat domain names ending with '.homenet.' just like any other FQDN, and MUST NOT make any assumption on the level of additional security implied by its presence.</t>
+            <!-- <t>Applications MUST NOT treat domain names ending with '.homenet.' specially with respect to the resolution protocol used.</t> -->
 
             <!-- Name Resolution APIs and Libraries -->
-            <t>Name resolution APIs and libraries SHOULD NOT recognize names ending with '.homenet.' as special and SHOULD NOT treat them differently. Name resolution APIs SHOULD send queries for such names to their configured caching DNS server(s).</t>
+            <t>Name resolution APIs and libraries MUST NOT recognize names ending with '.homenet.' as special and MUST NOT treat them differently. Name resolution APIs MUST send queries for such names to their configured caching DNS server(s). Using a caching server other than the server or servers offered by the home network will result in failure to correctly resolve queries for '.homenet'.</t>
 
             <!-- Caching DNS Servers -->
-            <t>Cachine DNS Servers SHOULD recognize such names as special use and SHOULD NOT, by default, attempt to look up NS records for them, or otherwise query authoritative DNS servers in an attempt to resolve these names.  Instead, recursive/caching DNS servers that are not part of a home network SHOULD generate immediate NXDOMAIN response. Caching DNS Servers that are part of a home network MAY be configured manually or automatically (e.g., for auto-configuration purposes) to act differently, e.g., by querying another name server configured as authoritative for part of the domain, or proxying the request through a different mechanism.
-            </t>
+            <t>Unless configured otherwise, Caching DNS servers MUST behave as described in Locally Served Zones <xref target="RFC6303"/> Section 3. Caching DNS Servers that are part of a home network MAY be configured manually or automatically (e.g., for auto-configuration purposes) to act differently, e.g., by querying another name server configured as authoritative for part of the domain, or proxying the request through a different mechanism.</t>
 
             <!-- Authoritative DNS Servers -->
             <t>Authoritative DNS Servers SHOULD recognize such names as special-use and SHOULD NOT, by default, attempt to look up NS records for these names. Servers that are part of a home network or providing name resolution services for a home network MAY be configured to act as authoritative for the whole top-level domain or a part of it.</t>
 
             <!-- DNS Server Operators: -->
-            <t>DNS server operators SHOULD NOT attempt to configure DNS servers to act as authoriative for any of these names. Internet service providers or, by extension, entities providing name resolution services to home networks MAY configure their DNS servers to answer such requests in a way which ensures total isolation between different home networks.</t>
+            <!-- <t>DNS server operators MUST NOT attempt to configure DNS servers to act as authoritative for any of these names.  [[ TODO - AS112 delegation ]] </t> -->
 
             <!-- DNS Registries/Registrars: -->
-            <t>DNS Registries and Registrars MUST NOT assign any sub-domain from '.homenet.'.</t>
+            <t>DNS Registries/Registrars MUST NOT grant requests to register '.homenet' in the normal way to any person or entity.  '.homenet' is registered in perpetuity to IANA:</t>
+            <artwork>
+        Domain Name: HOMENET
+        Registrar: RESERVED-INTERNET ASSIGNED NUMBERS AUTHORITY
+        Whois Server: whois.iana.org
+        Referral URL: http://res-dom.iana.org
+        Name Server: A.IANA-SERVERS.NET
+        Name Server: B.IANA-SERVERS.NET
+        Status: clientDeleteProhibited
+        Status: clientTransferProhibited
+        Status: clientUpdateProhibited</artwork>
         </list>
-
     </t>
 </section>
 
+<section title="Updates to Home Networking Control Protocol">
+    <t>The final paragraph of Homenet Considerations Protocol <xref target="RFC7788"/>, section 8, is updated as follows:</t>
+    <t>OLD:<list style="empty">
+        <t>Names and unqualified zones are used in an HNCP network to provide naming and service discovery with local significance.  A network-wide zone is appended to all single labels or unqualified zones in order to qualify them. ".home" is the default; however, an administrator MAY configure the announcement of a Domain-Name TLV (Section 10.6) for the network to use a different one.  In case multiple are announced, the domain of the node with the greatest node identifier takes precedence.</t>
+        </list>
+        NEW: <list style="empty">
+            <t>Names and unqualified zones are used in an HNCP network to provide naming and service discovery with local significance.  A network-wide zone is appended to all single labels or unqualified zones in order to qualify them. ".homenet" is the default; however, an administrator MAY configure the announcement of a Domain-Name TLV (Section 10.6) for the network to use a different one.  In case multiple are announced, the domain of the node with the greatest node identifier takes precedence.</t>
+            <t>The '.homenet' special-use name does not require a special resolution protocol.  Names for which the rightmost non-terminal label is 'homenet' are resolved using the DNS protocol <xref target="RFC1035"/>.  The handling of these names is specified in <xref target="I-D.ietf-homenet-dot"/>.
+        </list></t>
+    </section>
 
 <section anchor="security" title="Security Considerations">
     <t>Although a DNS record returned as a response to a query ending with '.homenet.' is expected to have local significance and be returned by a server involved in name resolution for the home network the device is connected in, such response MUST NOT be considered more trustworthy than would be a similar response for any other DNS query.</t>
+    <t>Because '.homenet' is not globally scoped and cannot be secured using DNSSEC based on the root domain's trust anchor, there is no way to tell, using a standard DNS query, in which home network scope an answer belongs. Consequently, users may experience surprising results with such names when roaming to different home networks.   To prevent this from happening, it may be useful for the resolver to identify different home networks on which it has resolved names, but this is out of scope for this document.</t>
 </section>
 
 <section title="IANA Considerations">
-    <t>[Once published, this should say] IANA has recorded the top-level
-        domain ".homenet" in the Special-Use Domain Names registry [SUDN].</t>
+    <t>IANA is requested to record the top-level domain ".homenet" in the Special-Use Domain Names registry [SUDN].</t>
+    <t>IANA is reminded that an insecure delegation for these zones is required for compliance with <xref target="RFC6303"/> to break the DNSSEC chain of trust.</t>
 </section>
 
 <section title="Acknowledgments">
-    <t>The author would like to thank Stuart Cheschire for his prior work on '.home', as well as the homenet chairs: Mark Townsley and Ray Bellis.</t>
+    <t>The author would like to thank Stuart Cheshire for his prior work on '.home', as well as the homenet chairs: Mark Townsley and Ray Bellis.</t>
 </section>
 
 </middle>
@@ -103,12 +122,16 @@
 <back>
 
 <references title="Normative References">
+  <?rfc include="reference.RFC.6303.xml"?>
   <?rfc include="reference.RFC.6761.xml"?>
+  <?rfc include="reference.I-D.ietf-homenet-redact"?>
 </references>
 
 <references title="Informative References">
+  <?rfc include="reference.RFC.1035.xml"?>
   <?rfc include="reference.RFC.7368.xml"?>
   <?rfc include="reference.RFC.7788.xml"?>
+  <?rfc include="I-D.ietf-homenet-dot"?>
   <reference anchor="ICANN1" target="https://www.icann.org/en/system/files/files/resolutions-new-gtld-annex-1-07oct13-en.pdf">
       <front>
           <title>New gTLD Collision Risk Mitigation</title>
