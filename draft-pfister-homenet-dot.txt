@@ -70,11 +70,11 @@ Table of Contents
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
    7.  RFC Editor Notes  . . . . . . . . . . . . . . . . . . . . . .   5
-   8.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   5
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+   8.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   6
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
      9.2.  Informative References  . . . . . . . . . . . . . . . . .   6
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
@@ -82,9 +82,9 @@ Table of Contents
    identified by names that are unique within the boundaries of the home
    network [RFC7368].  The naming mechanism also needs to function
    without configuration from the user.  While it is conceivable that
-   this could be done through a delegation from the ISP, homenets must
-   function without that delegation.  A default name with a scope
-   limited to each individual homenet needs to be used.
+   this could be done through a delegation from the ISP, home networks
+   must function without that delegation.  A default name with a scope
+   limited to each individual home network needs to be used.
 
    The '.homenet' top-level domain replaces '.home' which was specified
    in [RFC7788] as the default domain-name for home networks. '.home'
@@ -123,7 +123,8 @@ Internet-Draft                 dot homenet                  October 2016
 
    DNS queries for names ending with '.homenet.' are resolved using
    local resolvers on the homenet.  Such queries MUST NOT be recursively
-   forwarded to servers outside the scope of the home network.
+   forwarded to servers outside the logical boundaries of the home
+   network.
 
    Although home networks most often provide one or more service
    discovery mechanisms, it is still expected that some users will see,
@@ -141,12 +142,16 @@ Internet-Draft                 dot homenet                  October 2016
    per [RFC6761]).
 
    1.  Users can use names ending with '.homenet.' just as they would
-       any other domain name.  The '.homenet' name is chosen to be
+       use any other domain name.  The '.homenet' name is chosen to be
        readily recognized by users as signifying that the name is
        addressing a service on the homenet to which the user's device is
        connected.
 
-   2.  Name resolution APIs and libraries MUST NOT recognize names
+   2.  Applications SHOULD treat domain names ending with '.homenet.'
+       just like any other FQDN, and MUST NOT make any assumption on the
+       level of additional security implied by its presence.
+
+   3.  Name resolution APIs and libraries MUST NOT recognize names
        ending with '.homenet.' as special and MUST NOT treat them
        differently.  Name resolution APIs MUST send queries for such
        names to their configured caching DNS server(s).  Using a caching
@@ -154,14 +159,9 @@ Internet-Draft                 dot homenet                  October 2016
        network will result in failure to correctly resolve queries for
        '.homenet'.
 
-   3.  Unless configured otherwise, Caching DNS servers MUST behave as
-       described in Locally Served Zones [RFC6303] Section 3.  Caching
+   4.  Unless configured otherwise, Caching DNS servers MUST behave as
+       described in Locally Served Zones ([RFC6303] Section 3).  Caching
        DNS Servers that are part of a home network MAY be configured
-       manually or automatically (e.g., for auto-configuration purposes)
-       to act differently, e.g., by querying another name server
-       configured as authoritative for part of the domain, or proxying
-       the request through a different mechanism.
-
 
 
 
@@ -170,14 +170,22 @@ Pfister & Lemon           Expires April 4, 2017                 [Page 3]
 Internet-Draft                 dot homenet                  October 2016
 
 
-   4.  Authoritative DNS Servers SHOULD recognize such names as special-
+       manually or automatically (e.g., for auto-configuration purposes)
+       to act differently, e.g., by querying another name server
+       configured as authoritative for part of the domain, or proxying
+       the request through a different mechanism.
+
+   5.  Authoritative DNS Servers SHOULD recognize such names as special-
        use and SHOULD NOT, by default, attempt to look up NS records for
        these names.  Servers that are part of a home network or
        providing name resolution services for a home network MAY be
        configured to act as authoritative for the whole top-level domain
        or a part of it.
 
-   5.  DNS Registries/Registrars MUST NOT grant requests to register
+   6.  DNS server operators SHOULD NOT attempt to configure DNS servers
+       to act as authoriative for any name ending in '.homenet'.
+
+   7.  DNS Registries/Registrars MUST NOT grant requests to register
        '.homenet' in the normal way to any person or entity.  '.homenet'
        is registered in perpetuity to IANA:
 
@@ -209,14 +217,6 @@ Internet-Draft                 dot homenet                  October 2016
 
    NEW:
 
-      Names and unqualified zones are used in an HNCP network to provide
-      naming and service discovery with local significance.  A network-
-      wide zone is appended to all single labels or unqualified zones in
-      order to qualify them. ".homenet" is the default; however, an
-      administrator MAY configure the announcement of a Domain-Name TLV
-      (Section 10.6) for the network to use a different one.  In case
-      multiple are announced, the domain of the node with the greatest
-      node identifier takes precedence.
 
 
 
@@ -225,6 +225,15 @@ Pfister & Lemon           Expires April 4, 2017                 [Page 4]
 
 Internet-Draft                 dot homenet                  October 2016
 
+
+      Names and unqualified zones are used in an HNCP network to provide
+      naming and service discovery with local significance.  A network-
+      wide zone is appended to all single labels or unqualified zones in
+      order to qualify them. ".homenet" is the default; however, an
+      administrator MAY configure the announcement of a Domain-Name TLV
+      (Section 10.6) for the network to use a different one.  In case
+      multiple are announced, the domain of the node with the greatest
+      node identifier takes precedence.
 
       The '.homenet' special-use name does not require a special
       resolution protocol.  Names for which the rightmost non-terminal
@@ -264,15 +273,6 @@ Internet-Draft                 dot homenet                  October 2016
    [THIS] should be replaced with a reference to this document in its
    final RFC form.
 
-8.  Acknowledgments
-
-   The author would like to thank Stuart Cheshire for his prior work on
-   '.home', as well as the homenet chairs: Mark Townsley and Ray Bellis.
-
-9.  References
-
-
-
 
 
 
@@ -282,10 +282,17 @@ Pfister & Lemon           Expires April 4, 2017                 [Page 5]
 Internet-Draft                 dot homenet                  October 2016
 
 
+8.  Acknowledgments
+
+   The author would like to thank Stuart Cheshire for his prior work on
+   '.home', as well as the homenet chairs: Mark Townsley and Ray Bellis.
+
+9.  References
+
 9.1.  Normative References
 
-   [RFC6303]  Andrews, M., "Locally Served DNS Zones", BCP 163,
-              RFC 6303, DOI 10.17487/RFC6303, July 2011,
+   [RFC6303]  Andrews, M., "Locally Served DNS Zones", BCP 163, RFC
+              6303, DOI 10.17487/RFC6303, July 2011,
               <http://www.rfc-editor.org/info/rfc6303>.
 
    [RFC6761]  Cheshire, S. and M. Krochmal, "Special-Use Domain Names",
@@ -299,13 +306,11 @@ Internet-Draft                 dot homenet                  October 2016
 9.2.  Informative References
 
    [RFC1035]  Mockapetris, P., "Domain names - implementation and
-              specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
-              November 1987, <http://www.rfc-editor.org/info/rfc1035>.
+              specification", STD 13, RFC 1035, November 1987.
 
-   [RFC7368]  Chown, T., Ed., Arkko, J., Brandt, A., Troan, O., and J.
-              Weil, "IPv6 Home Networking Architecture Principles",
-              RFC 7368, DOI 10.17487/RFC7368, October 2014,
-              <http://www.rfc-editor.org/info/rfc7368>.
+   [RFC7368]  Chown, T., Arkko, J., Brandt, A., Troan, O., and J. Weil,
+              "IPv6 Home Networking Architecture Principles", RFC 7368,
+              October 2014.
 
    [RFC7788]  Stenberg, M., Barth, S., and P. Pfister, "Home Networking
               Control Protocol", RFC 7788, DOI 10.17487/RFC7788, April
@@ -323,11 +328,6 @@ Internet-Draft                 dot homenet                  October 2016
               <http://www.iana.org/assignments/special-use-domain-names/
               special-use-domain-names.xhtml>.
 
-Authors' Addresses
-
-
-
-
 
 
 
@@ -337,6 +337,8 @@ Pfister & Lemon           Expires April 4, 2017                 [Page 6]
 
 Internet-Draft                 dot homenet                  October 2016
 
+
+Authors' Addresses
 
    Pierre Pfister
    Cisco Systems
@@ -354,8 +356,6 @@ Internet-Draft                 dot homenet                  October 2016
 
    Phone: +1 650 381 6000
    Email: ted.lemon@nominum.com
-
-
 
 
 
