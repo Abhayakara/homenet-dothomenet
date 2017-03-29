@@ -287,7 +287,7 @@
   <?rfc include="reference.RFC.1035.xml"?>
   <?rfc include="reference.RFC.7368.xml"?>
   <?rfc include="reference.RFC.7788.xml"?>
-  <reference anchor="ICANN1" target="https://www.icann.org/en/system/files/files/resolutions-new-gtld-annex-1-07oct13-en.pdf">
+  <reference anchor="ICANN1" target="https://www.icann.org/en/system/files/files/new-gtld-collision-mitigation-05aug13-en.pdf">
       <front>
           <title>New gTLD Collision Risk Mitigation</title>
           <author/>
