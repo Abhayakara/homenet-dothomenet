@@ -53,7 +53,7 @@
 	This document specifies the behavior that is expected from the Domain Name System with
 	regard to DNS queries for names ending with '.home.arpa.', and designates this 
 	domain as a special-use domain name. 'home.arpa' is designated for non-unique use
-	in home networks.   Home Networking Control Protocol (HNCP) is updated to use the
+	in residential home networks.   Home Networking Control Protocol (HNCP) is updated to use the
 	'.home.arpa' domain instead of '.home'.
       </t>
     </abstract>
@@ -81,7 +81,7 @@
       </t>
 
       <t>
-	In addition, it's necessary, for compatibility with DNSSEC <xref target="security">,
+	In addition, it's necessary, for compatibility with DNSSEC (<xref target="security"/>),
 	that an unsigned delegation be present for the name.  There is an existing process for
 	allocating names under '.arpa' <xref target="RFC3172"/>.  No such process is available
 	for requesting a similar delegation in the root at the request of the IETF, which does
@@ -101,7 +101,7 @@
 	Although this document makes specific reference to RFC7788, it is not intended that
 	the use of '.home.arpa' be restricted solely to networks where HNCP is deployed; it is
 	rather the case that '.home.arpa' is the correct domain for uses like the one described
-	for '.home' in RFC7788.
+	for '.home' in RFC7788: local name service in residential home networks.
       </t>
     </section>
 
@@ -144,7 +144,7 @@
 
 	  <!-- Application Software -->
 	  <t>
-	    Application software SHOULD NOT handle names ending in '.home.arpa' specially.  In
+	    Application software SHOULD NOT process names ending in '.home.arpa' specially.  In
 	    particular, it would not be correct to assign a higher level of trust to such names:
 	    although such names might refer to resources on the application user's home network,
 	    there is no basis for validating this assumption at a protocol level, and hence such
@@ -165,7 +165,7 @@
 
 	  <!-- Caching DNS Servers -->
 	  <t>
-	    Unless specifically configured to serve subdomains of 'home.arpa', recursive
+	    Unless configured to serve subdomains of 'home.arpa', recursive
 	    resolvers and DNS proxies MUST behave as described in Locally Served Zones (<xref
 	    target="RFC6303"/> Section 3). Recursive resolvers that are part of a home network
 	    MAY be configured manually or automatically (e.g., for auto-configuration purposes)
@@ -255,7 +255,7 @@
       </t>
 
       <t>
-	It is not possible to install a trust anchor for this zone in the .ARPA zone.  The reason
+	It is not possible to install a trust anchor for this zone in the '.arpa' zone.  The reason
 	for this is that in order to do so, it would be necessary to have the key-signing key for
 	the zone (<xref target="RFC4034"/> Section 5).  Since the zone is not globally unique, no
 	one key would work.
@@ -267,6 +267,8 @@
 	a caching resolver that is aware of the special local meaning of '.home.arpa'.  If a
 	host stub resolver attempts to validate a name in .local.arpa, an authenticated denial
 	of existence of 'home' as a subdomain of 'arpa.' would cause the validation to fail.
+        Therefore, the only delegation that will allow names under '.home.arpa' to be resolved
+        is an unsigned delegation.
       </t>
 
       <t>
@@ -295,7 +297,7 @@
     <section title="Delegation of 'home.arpa'">
       <t>
 	In order to be fully functional, there must be a delegation of 'home.arpa' in the
-	'.arpa' zone<xref target="RFC3172"/>.  This delegation MUST NOT be signed, MUST NOT
+	'.arpa' zone <xref target="RFC3172"/>.  This delegation MUST NOT be signed, MUST NOT
 	include a DS record, and MUST point to one or more black hole servers, for example
 	BLACKHOLE-1.IANA.ORG and BLACKHOLE-2.IANA.ORG.  The reason that this delegation must not
 	be signed is that not signing the delegation breaks the DNSSEC chain of trust, which
@@ -327,11 +329,11 @@
       <?rfc include="reference.RFC.3172.xml"?>
       <?rfc include="reference.RFC.6303.xml"?>
       <?rfc include="reference.RFC.6761.xml"?>
-      <?rfc include="reference.I-D.ietf-homenet-redact"?>
     </references>
 
     <references title="Informative References">
       <?rfc include="reference.RFC.1035.xml"?>
+      <?rfc include="reference.RFC.4033.xml"?>
       <?rfc include="reference.RFC.4034.xml"?>
       <?rfc include="reference.RFC.7368.xml"?>
       <?rfc include="reference.RFC.7788.xml"?>
