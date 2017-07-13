@@ -3,7 +3,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 
 <rfc ipr="trust200902"
-     docName="draft-ietf-homenet-dot-06"
+     docName="draft-ietf-homenet-dot-09"
      updates="RFC7788"
      category="std">
 
@@ -41,7 +41,7 @@
       </address>
     </author>
 
-    <date month="June" year="2017" />
+    <date month="July" year="2017" />
 
     <keyword>Homenet</keyword>
     <keyword>TLD</keyword>
@@ -64,18 +64,18 @@
     
     <section anchor="intro" title="Introduction">
       <t>
-	Users and devices within a home network require devices and services to be identified by names
-	that are unique within the boundaries of the home network <xref target="RFC7368"/>. The naming
-	mechanism needs to function without configuration from the user. While it may be possible for
-	a name to be delegated by an ISP, home networks must also function in the absence of such a
-	delegation.  A default name with a scope limited to each individual home network needs to be
-	used.
+	Users and devices within a home network (hereafter "homenet") require devices and
+	services to be identified by names that are unique within the boundaries of the homenet
+	<xref target="RFC7368"/>. The naming mechanism needs to function without configuration
+	from the user. While it may be possible for a name to be delegated by an ISP, homenets
+	must also function in the absence of such a delegation.  A default name with a scope
+	limited to each individual homenet needs to be used.
       </t>
       
       <t>
-	The '.home.arpa' domain corrects an error in <xref target="RFC7788"/>, replacing '.home'
-	as the default domain-name for home networks. '.home' had been selected as the most
-	user-friendly option.  However, there are existing uses of '.home' that may be in
+	This document corrects an error in <xref target="RFC7788"/>, replacing '.home' with
+	'.home.arpa' as the default domain-name for homenets. '.home' had been selected as the
+	most user-friendly option.  However, there are existing uses of '.home' that may be in
 	conflict with this use: evidence indicates that '.home' queries frequently leak out and
 	reach the root name servers <xref target="ICANN1"/> <xref target="ICANN2"/>.
       </t>
@@ -90,33 +90,43 @@
 
       <t>
 	This document registers the domain '.home.arpa.' as a special-use domain name <xref
-	target="RFC6761"/> and specifies the behavior that is expected from the Domain Name System
-	with regard to DNS queries for names whose rightmost non-terminal labels are '.home.arpa'.
-	Queries for names ending with '.home.arpa.' are of local significance within the scope of a
-	home network, meaning that identical queries will result in different results from one home
-	network to another.  In other words, a name ending in '.home.arpa' is not globally unique.
+	target="RFC6761"/> and specifies the behavior that is expected from the Domain Name
+	System with regard to DNS queries for names whose rightmost non-terminal labels are
+	'.home.arpa'.  Queries for names ending with '.home.arpa.' are of local significance
+	within the scope of a homenet, meaning that identical queries will result in different
+	results from one homenet to another.  In other words, a name ending in '.home.arpa' is
+	not globally unique.
       </t>
 
       <t>
 	Although this document makes specific reference to RFC7788, it is not intended that
 	the use of '.home.arpa' be restricted solely to networks where HNCP is deployed; it is
 	rather the case that '.home.arpa' is the correct domain for uses like the one described
-	for '.home' in RFC7788: local name service in residential home networks.
+	for '.home' in RFC7788: local name service in residential homenets.
       </t>
     </section>
 
+    <section anchor="requirements" title="Requirements Language">
+      <t>
+	The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD
+	NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+	interpreted as described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>
+	when, and only when, they appear in all capitals, as shown here.
+      </t>
+    </section>
+    
     <section anchor="guidance" title="General Guidance">
       <t>
-	The domain name '.home.arpa.' is to be used for naming within residential home
-	networks. Names ending with '.home.arpa.' reference a locally-served zone, the contents of
-	which are unique only to a particular home network, and are not globally unique.  Such
-	names refer to nodes and/or services that are located within a home network (e.g., a
-	printer, or a toaster).
+	The domain name '.home.arpa.' is to be used for naming within residential
+	homenets. Names ending with '.home.arpa.' reference a locally-served zone, the contents
+	of which are unique only to a particular homenet, and are not globally unique.  Such
+	names refer to nodes and/or services that are located within a homenet (e.g., a printer,
+	or a toaster).
       </t>
       <t>
 	DNS queries for names ending with '.home.arpa.' are resolved using local resolvers on the
 	homenet.  Such queries MUST NOT be recursively forwarded to servers outside the logical
-	boundaries of the home network.
+	boundaries of the homenet.
       </t>
       <t>
 	Some service discovery user interfaces that are expected to be used on homenets conceal
@@ -124,7 +134,7 @@
 	some cases, users will need to see, remember, and even type, names ending with
 	'.home.arpa'. It is therefore desirable that users identify the domain and
 	understand that using it expresses the intention to connect to a service that is specific
-	to the home network to which they are connected.  Enforcing the fulfillment of this
+	to the homenet to which they are connected.  Enforcing the fulfillment of this
 	intention is out of scope for this document.
       </t>
     </section>
@@ -144,11 +154,9 @@
 
 	  <!-- Application Software -->
 	  <t>
-	    Application software SHOULD NOT process names ending in '.home.arpa' specially.  In
-	    particular, it would not be correct to assign a higher level of trust to such names:
-	    although such names might refer to resources on the application user's home network,
-	    there is no basis for validating this assumption at a protocol level, and hence such
-	    an assumption would create an attack surface for devices roaming to other networks.
+	    Application software SHOULD NOT treat names ending in '.home.arpa' differently than
+	    other names.  In particular, there is no basis for trusting names that are subdomains
+	    of '.home.arpa' (see <xref target="security"/>).
 	  </t>
 
 	  <!-- Name Resolution APIs and Libraries -->
@@ -156,37 +164,44 @@
 	    Name resolution APIs and libraries MUST NOT recognize names that end in '.home.arpa.' as
 	    special and MUST NOT treat them differently. Name resolution APIs MUST send queries for
 	    such names to a recursive DNS server that is configured to be authoritative for the
-	    .home.arpa zone appropriate to the home network.  One or more IP addresses for recursive
+	    '.home.arpa' zone appropriate to the homenet.  One or more IP addresses for recursive
 	    DNS servers will usually be supplied to the client through router advertisements or
 	    DHCP.  If a host is configured to use a resolver other than one that is authoritative
-	    for the appropriate .home.arpa zone, the client may be unable to resolve, or may receive
-	    incorrect results for, names in sub domains of ".home.arpa".
+	    for the appropriate '.home.arpa' zone, the client may be unable to resolve, or may receive
+	    incorrect results for, names in sub domains of '.home.arpa'.
 	  </t>
 
 	  <!-- Caching DNS Servers -->
 	  <t>
-	    Unless configured to serve subdomains of 'home.arpa', recursive
-	    resolvers and DNS proxies MUST behave as described in Locally Served Zones (<xref
-	    target="RFC6303"/> Section 3). Recursive resolvers that are part of a home network
-	    MAY be configured manually or automatically (e.g., for auto-configuration purposes)
-	    to act differently, e.g., by querying another name server configured as
-	    authoritative for part or all of the '.home.arpa' domain, or proxying the request
-	    through a different mechanism.
+	    Unless configured otherwise, recursive resolvers and DNS proxies MUST behave as
+	    described in Locally Served Zones (<xref target="RFC6303"/> Section 3).  Recursive
+	    resolvers that can be used in a homenet MUST be configurable with a delegation to an
+	    authoritative server for that particular homenet's instance of the domain
+	    '.home.arpa', and, when so configured, MUST NOT attempt to look up a delegation for
+	    '.home.arpa' in the public DNS.  Of course, from an implementation standpoint it may
+	    be that a hybrid name server acts as a caching resolver or DNS proxy for non-local
+	    domains and as an authoritative server for '.home.arpa' and other locally served
+	    zones, responding directly to queries for subdomains of '.home.arpa' rather than
+	    using a delegation.
 	  </t>
 
 	  <!-- Authoritative DNS Servers -->
 	  <t>
-	    Only a DNS server that is authoritative for the '.arpa' zone or is configured to be
-	    authoritative for '.home.arpa' or a subdomain of '.home.arpa' will ever answer a
-	    query about '.home.arpa.'  In both of these cases, the server should simply answer
-	    as configured: no special handling is required.  The delegation returned by servers
-	    authoritative for '.arpa' will not match the delegation returned by a local resolver
-	    that is actually answering for '.home.arpa.'
+	    No special processing of '.home.arpa' is required for authoritative DNS server
+	    implementations.  However, it is possible that an authoritative DNS server might
+	    attempt to validate the delegation for a zone before answering authoritatively for
+	    that zone.  In this situation, it would find an invalid delegation, and would not
+	    answer authoritatively.  A server that implements this sort of check MUST be
+	    configurable so that either it does not do this check for the 'home.arpa' domain, or
+	    it ignores the results of the check.
 	  </t>
 
 	  <!-- DNS Server Operators: -->
 	  <t>
-	    DNS servers outside a home network should not be configured to be authoritative for .home.arpa.
+	    DNS server operators MAY configure an authoritative server for '.home.arpa' for use
+	    in homenets and other home networks.  The operator for the DNS servers authoritative
+	    for '.home.arpa' in the global DNS will configure any such servers as described in
+	    <xref target="delegation"/>.
 	  </t>
 
 	  <!-- DNS Registries/Registrars: -->
@@ -201,7 +216,7 @@
 
     <section title="Updates to Home Networking Control Protocol">
       <t>
-	The final paragraph of Homenet Considerations Protocol <xref target="RFC7788"/>, section
+	The final paragraph of Home Networking Control Protocol <xref target="RFC7788"/>, section
 	8, is updated as follows:
       </t>
       <t>
@@ -221,7 +236,7 @@
           <t>
 	    Names and unqualified zones are used in an HNCP network to provide naming and service
 	    discovery with local significance.  A network-wide zone is appended to all single
-	    labels or unqualified zones in order to qualify them. ".home.arpa" is the default;
+	    labels or unqualified zones in order to qualify them. '.home.arpa' is the default;
 	    however, an administrator MAY configure the announcement of a Domain-Name TLV (Section
 	    10.6) for the network to use a different one.  In case multiple are announced, the
 	    domain of the node with the greatest node identifier takes precedence.
@@ -240,7 +255,7 @@
       <t>
 	A DNS record that is returned as a response to a query for an FQDN in the domain
 	'.home.arpa.'  is expected to have local significance.  It is expected to be returned by
-	a server involved in name resolution for the home network the device is connected in.
+	a server involved in name resolution for the homenet the device is connected in.
 	However, such response MUST NOT be considered more trustworthy than would be a similar
 	response for any other DNS query.
       </t>
@@ -248,9 +263,9 @@
       <t>
 	Because '.home.arpa' is not globally scoped and cannot be secured using DNSSEC based on the
 	root domain's trust anchor, there is no way to tell, using a standard DNS query, in which
-	home network scope an answer belongs. Consequently, users may experience surprising results
-	with such names when roaming to different home networks.  To prevent this from happening, it
-	may be useful for the resolver to identify different home networks on which it has resolved
+	homenet scope an answer belongs. Consequently, users may experience surprising results
+	with such names when roaming to different homenets.  To prevent this from happening, it
+	may be useful for the resolver to identify different homenets on which it has resolved
 	names, but this is out of scope for this document.
       </t>
 
@@ -265,7 +280,7 @@
 	An alternative would be to install a authenticated denial of existence (<xref
 	target="RFC4033"/> Section 3.2).  However, this assumes that validation is being done on
 	a caching resolver that is aware of the special local meaning of '.home.arpa'.  If a
-	host stub resolver attempts to validate a name in .local.arpa, an authenticated denial
+	host stub resolver attempts to validate a name in '.home.arpa', an authenticated denial
 	of existence of 'home' as a subdomain of 'arpa.' would cause the validation to fail.
         Therefore, the only delegation that will allow names under '.home.arpa' to be resolved
         is an unsigned delegation.
@@ -294,7 +309,7 @@
       </t>
     </section>
 
-    <section title="Delegation of 'home.arpa'">
+    <section anchor="delegation" title="Delegation of 'home.arpa'">
       <t>
 	In order to be fully functional, there must be a delegation of 'home.arpa' in the
 	'.arpa' zone <xref target="RFC3172"/>.  This delegation MUST NOT be signed, MUST NOT
@@ -308,8 +323,9 @@
 
     <section title="IANA Considerations">
       <t>
-	IANA is requested to record the domain name ".home.arpa" in the Special-Use Domain Names
-	registry <xref target="SUDN"/>.
+	IANA is requested to record the domain name '.home.arpa' in the Special-Use Domain Names
+	registry <xref target="SUDN"/>.  IANA is requested, with the approval of IAB, to
+	implement the delegation requested in <xref target="delegation"/>.
       </t>
     </section>
 
@@ -317,7 +333,8 @@
       <t>
 	The authors would like to thank Stuart Cheshire for his prior work on '.home', as well as
 	the homenet chairs: Mark Townsley and Ray Bellis.   We would also like to thank Paul Hoffman
-	for providing review and comments on the IANA considerations section.
+	for providing review and comments on the IANA considerations section and Suzanne Woolf and
+	Ray Bellis for their detailed review comments.
       </t>
     </section>
 
@@ -326,9 +343,11 @@
   <back>
 
     <references title="Normative References">
+      <?rfc include="reference.RFC.2119.xml"?>
       <?rfc include="reference.RFC.3172.xml"?>
       <?rfc include="reference.RFC.6303.xml"?>
       <?rfc include="reference.RFC.6761.xml"?>
+      <?rfc include="reference.RFC.8174.xml"?>
     </references>
 
     <references title="Informative References">
