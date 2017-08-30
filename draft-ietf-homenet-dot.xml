@@ -68,8 +68,9 @@
 	services to be identified by names that are unique within the boundaries of the homenet
 	<xref target="RFC7368"/>. The naming mechanism needs to function without configuration
 	from the user. While it may be possible for a name to be delegated by an ISP, homenets
-	must also function in the absence of such a delegation.  A default name with a scope
-	limited to each individual homenet needs to be used.
+	must also function in the absence of such a delegation.  This document reserves the
+	name 'home.arpa.' to serve as the default name for this purpose, with with a scope
+	limited to each individual homenet.
       </t>
       
       <t>
@@ -177,9 +178,9 @@
 	    <vspace blankLines="1"/>
 	    A host that is configured to use a resolver other than one that has been provided by
 	    the local network may be unable to resolve, or may receive incorrect results for,
-	    names in sub domains of 'home.arpa.'.   In order to avoid this, it is permissible
-	    that hosts use the locally-provided resolvers for resolving 'home.arpa.' even when
-	    they are configured to use other resolvers.
+	    subdomains of 'home.arpa.'.  In order to avoid this, it is permissible that hosts
+	    use the locally-provided resolvers for resolving 'home.arpa.' even when they are
+	    configured to use other resolvers.
 	  </t>
 
 	  <!-- Caching DNS Servers -->
@@ -196,8 +197,8 @@
 	      <t>
 		Unless configured otherwise, recursive resolvers and DNS proxies MUST behave as
 		described in Locally Served Zones (<xref target="RFC6303"/> Section 3).  That is,
-		queries for domains that are subdomains of 'home.arpa.' MUST NOT be forwarded, with
-		one important exception: a query for a DS record when the DO bit set MUST return the
+		queries for 'home.arpa.' and subdomains of 'home.arpa.' MUST NOT be forwarded, with
+		one important exception: a query for a DS record with the DO bit set MUST return the
 		correct answer for that question, including correct information in the authority
 		section that proves that the record is nonexistent.
 		<vspace blankLines="1"/>
@@ -211,14 +212,16 @@
 	      </t>
 	      <t>
 		In addition to the behavior specified above, recursive resolvers that can be used in
-		a homenet MUST be configurable with a delegation to an authoritative server for that
-		particular homenet's instance of the domain 'home.arpa.'.
+		a homenet MUST be configurable to forward queries for 'home.arpa.' and subdomains of
+		'home.arpa.' to an authoritative server for 'home.arpa.'.   This server will provide
+		authoritative data for 'home.arpa.' within a particular homenet.   The special
+		handling for DS records for the 'home.arpa.' delegation is still required.
 		<vspace blankLines="1"/>
 		It is permissible to combine the recursive resolver function for general DNS
 		lookups with an authoritative resolver for 'home.arpa.'; in this case, rather
-		than forwarding queries for subdomains of 'home.arpa.' to an authoritative server,
-		the caching resolver answers them authoritatively.   The behavior with respect
-		to forwarding queries specifically for 'home.arpa.' remains the same.
+		than forwarding queries for subdomains of 'home.arpa.' to an authoritative
+		server, the resolver answers them authoritatively.  The behavior with respect to
+		forwarding queries specifically for 'home.arpa.' remains the same.
 	      </t>
 	    </list>
 	  </t>
@@ -307,11 +310,11 @@
 	  with such names when roaming to different homenets.
 	</t>
 	<t>
-	  To prevent this from happening, it could be useful for the resolver to securely
-	  differentiate between different homenets, and between identical names on different
-	  homenets.  However, a mechanism for doing this has not yet been standardized, and
-	  doing so is out of scope for this document.  It is expected that this will be explored
-	  in future work.
+	  To prevent this from happening, it could be useful for the resolver on the host to
+	  securely differentiate between different homenets, and between identical names on
+	  different homenets.  However, a mechanism for doing this has not yet been
+	  standardized, and doing so is out of scope for this document.  It is expected that
+	  this will be explored in future work.
 	</t>
 
 	<t>
@@ -400,6 +403,13 @@
 	registry <xref target="SUDN"/>.  IANA is requested, with the approval of IAB, to
 	implement the delegation requested in <xref target="delegation"/>.
       </t>
+      <t>
+	IANA is further requested to create a new subregistry within the "Locally-Served DNS
+	Zones" registry <xref target="LSDZ"/>, titled "Transport-Independent Locally-Served DNS
+	Zones", with the same format as the other subregistries.  IANA is requested to add an
+	entry in this new registry for 'home.arpa.' with the description "Homenet Special-Use
+	Domain", listing this document as the reference.
+      </t>
     </section>
 
     <section title="Acknowledgments">
@@ -448,11 +458,18 @@
           <date month="October" year="2013" />
 	</front>
       </reference>
-      <reference anchor="SUDN" target="http://www.iana.org/assignments/special-use-domain-names/special-use-domain-names.xhtml">
+      <reference anchor="SUDN" target="https://www.iana.org/assignments/special-use-domain-names/special-use-domain-names.xhtml">
 	<front>
           <title>Special-Use Domain Names Registry</title>
           <author/>
           <date month="July" year="2012" />
+	</front>
+      </reference>
+      <reference anchor="LSDZ" target="https://www.iana.org/assignments/locally-served-dns-zones/locally-served-dns-zones.xhtml">
+	<front>
+          <title>Locally-Served DNS Zones Registry</title>
+          <author/>
+          <date month="July" year="2011" />
 	</front>
       </reference>
     </references>
