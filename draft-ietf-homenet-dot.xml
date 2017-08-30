@@ -408,7 +408,9 @@
 	Zones" registry <xref target="LSDZ"/>, titled "Transport-Independent Locally-Served DNS
 	Zones", with the same format as the other subregistries.  IANA is requested to add an
 	entry in this new registry for 'home.arpa.' with the description "Homenet Special-Use
-	Domain", listing this document as the reference.
+	Domain", listing this document as the reference.   The registration procedure for this
+	subregistry should be the same as for the others, currently "IETF Review"
+	(<xref target="RFC8126"/> Section 4.8).
       </t>
     </section>
 
@@ -421,7 +423,8 @@
 	very detailed review comments and process insights.  Thanks to Mark Andrews for
 	providing an exhaustive reference list on the topic of insecure delegations.  Thanks to
 	Dale Worley for catching a rather egregious mistake and for the Gen-Art review, and to
-	Daniel Migault for a thorough SecDir review.
+	Daniel Migault for a thorough SecDir review.   Thanks to Warren Kumari for catching
+	some additional issues, and to Adam Roach for some helpful clarifications.
       </t>
     </section>
 
@@ -444,6 +447,7 @@
       <?rfc include="reference.RFC.4034.xml"?>
       <?rfc include="reference.RFC.7368.xml"?>
       <?rfc include="reference.RFC.7788.xml"?>
+      <?rfc include="reference.RFC.8126.xml"?>
       <reference anchor="ICANN1" target="https://www.icann.org/en/system/files/files/new-gtld-collision-mitigation-05aug13-en.pdf">
 	<front>
           <title>New gTLD Collision Risk Mitigation</title>
