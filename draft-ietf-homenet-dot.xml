@@ -74,10 +74,10 @@
       </t>
       
       <t>
-	This document corrects an error in <xref target="RFC7788"/>, replacing '.home' with
-	'home.arpa.' as the default domain-name for homenets. '.home' had been selected as the
-	most user-friendly option.  However, there are existing uses of '.home' that may be in
-	conflict with this use: evidence indicates that '.home' queries frequently leak out and
+	This document corrects an error in <xref target="RFC7788"/>, replacing '.home.' with
+	'home.arpa.' as the default domain-name for homenets. '.home.' had been selected as the
+	most user-friendly option.  However, there are existing uses of '.home.' that may be in
+	conflict with this use: evidence indicates that '.home.' queries frequently leak out and
 	reach the root name servers <xref target="ICANN1"/> <xref target="ICANN2"/>.
       </t>
 
@@ -87,7 +87,10 @@
 	name.  There is an existing process for allocating names under '.arpa' <xref
 	target="RFC3172"/>.  No such process is available for requesting a similar delegation in
 	the root at the request of the IETF, which does not administer that zone.  As a result,
-	the use of '.home' is deprecated.
+	the use of '.home.', both as specified in RFC7788, and for other uses is deprecated.
+	This should not be taken to mean that an explicit allocation by ICANN is superseded;
+	this deprecation refers to uses of '.home.' as practiced at the time of publication
+	of this document.
       </t>
 
       <t>
