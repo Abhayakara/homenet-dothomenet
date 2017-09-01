@@ -74,20 +74,21 @@
       </t>
       
       <t>
-	This document corrects an error in <xref target="RFC7788"/>, replacing '.home.' with
-	'home.arpa.' as the default domain-name for homenets. '.home.' had been selected as the
-	most user-friendly option.  However, there are existing uses of '.home.' that may be in
-	conflict with this use: evidence indicates that '.home.' queries frequently leak out and
-	reach the root name servers <xref target="ICANN1"/> <xref target="ICANN2"/>.
+	This document corrects an error in <xref target="RFC7788"/>, replacing '.home' with
+	'home.arpa.' as the default domain-name for homenets. '.home' had been selected as the
+	most user-friendly option.  However, there are existing uses of '.home' that may be in
+	conflict with this use: evidence indicates that queries for 'home.' and subdomains of
+	'home.' frequently leak out and reach the root name servers <xref target="ICANN1"/>
+	<xref target="ICANN2"/>.
       </t>
 
       <t>
 	In addition, it's necessary, for compatibility with DNSSEC (<xref target="security"/>),
 	that an insecure delegation (<xref target="RFC4035"/> section 4.3) be present for the
-	name.  There is an existing process for allocating names under '.arpa' <xref
+	name.  There is an existing process for allocating names under '.arpa.' <xref
 	target="RFC3172"/>.  No such process is available for requesting a similar delegation in
 	the root at the request of the IETF, which does not administer that zone.  As a result,
-	all unregistered uses of '.home.' (that is, all current uses at the time of this
+	all unregistered uses of '.home' (that is, all current uses at the time of this
 	document's publication), particularly as specified in RFC7788, are deprecated.
       </t>
 
@@ -97,7 +98,7 @@
 	System with regard to DNS queries for names whose rightmost non-terminal labels are
 	'home.arpa.'.  Queries for names ending with '.home.arpa.' are of local significance
 	within the scope of a homenet, meaning that identical queries will result in different
-	results from one homenet to another.  In other words, a name ending in 'home.arpa.' is
+	results from one homenet to another.  In other words, a name ending in '.home.arpa.' is
 	not globally unique.
       </t>
 
@@ -135,7 +136,7 @@
 	Some service discovery user interfaces that are expected to be used on homenets conceal
 	information such as domain names from end users.  However, it is still expected that in
 	some cases, users will need to see, remember, and even type, names ending with
-	'home.arpa.'.  The working group hopes that this name will in some way indicate to as
+	'.home.arpa.'.  The working group hopes that this name will in some way indicate to as
 	many readers as possible that such domain names are referring to devices in the home,
 	but we recognize that it is an imperfect solution.
       </t>
@@ -158,7 +159,7 @@
 
 	  <!-- Application Software -->
 	  <t>
-	    Application software SHOULD NOT treat names ending in 'home.arpa.' differently than
+	    Application software SHOULD NOT treat names ending in '.home.arpa.' differently than
 	    other names.  In particular, there is no basis for trusting names that are subdomains
 	    of 'home.arpa.' (see <xref target="security"/>).
 	  </t>
@@ -172,8 +173,8 @@
 	    <vspace blankLines="1"/>
 	    One or more IP addresses for recursive DNS servers will usually be supplied to the
 	    client through router advertisements or DHCP.  For an administrative domain that
-	    uses names in 'home.arpa.', such as a homenet, the recursive resolvers provided by
-	    that domain will be able to answer queries for subdomains of home.arpa; other
+	    uses subdomains of 'home.arpa.', such as a homenet, the recursive resolvers provided by
+	    that domain will be able to answer queries for subdomains of 'home.arpa.'; other
 	    resolvers will not, or will provide answers that are not correct within that
 	    administrative domain.
 	    <vspace blankLines="1"/>
@@ -414,7 +415,7 @@
 	(<xref target="RFC8126"/> Section 4.8).
       </t>
     </section>
-
+    
     <section title="Acknowledgments">
       <t>
 	The authors would like to thank Stuart Cheshire for his prior work on '.home', as well
