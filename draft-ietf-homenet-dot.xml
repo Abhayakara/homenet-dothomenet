@@ -87,10 +87,8 @@
 	name.  There is an existing process for allocating names under '.arpa' <xref
 	target="RFC3172"/>.  No such process is available for requesting a similar delegation in
 	the root at the request of the IETF, which does not administer that zone.  As a result,
-	the use of '.home.', both as specified in RFC7788, and for other uses is deprecated.
-	This should not be taken to mean that an explicit allocation by ICANN is superseded;
-	this deprecation refers to uses of '.home.' as practiced at the time of publication
-	of this document.
+	all unregistered uses of '.home.' (that is, all current uses at the time of this
+	document's publication), particularly as specified in RFC7788, are deprecated.
       </t>
 
       <t>
