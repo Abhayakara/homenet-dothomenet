@@ -92,7 +92,7 @@
       </t>
 
       <t>
-	This document registers the domain '.home.arpa.' as a special-use domain name <xref
+	This document registers the domain 'home.arpa.' as a special-use domain name <xref
 	target="RFC6761"/> and specifies the behavior that is expected from the Domain Name
 	System with regard to DNS queries for names whose rightmost non-terminal labels are
 	'home.arpa.'.  Queries for names ending with '.home.arpa.' are of local significance
@@ -120,7 +120,7 @@
     
     <section anchor="guidance" title="General Guidance">
       <t>
-	The domain name '.home.arpa.' is to be used for naming within residential
+	The domain name 'home.arpa.' is to be used for naming within residential
 	homenets. Names ending with '.home.arpa.' reference a locally-served zone, the contents
 	of which are unique only to a particular homenet, and are not globally unique.  Such
 	names refer to nodes and/or services that are located within a homenet (e.g., a printer,
@@ -298,9 +298,9 @@
     <section anchor="security" title="Security Considerations">
       <section anchor="localsig" title="Local Significance">
 	<t>
-	  A DNS record that is returned as a response to a query for an FQDN in the domain
-	  '.home.arpa.'  is expected to have local significance.  It is expected to be returned by
-	  a server involved in name resolution for the homenet the device is connected in.
+	  A DNS record that is returned as a response to a query for an FQDN that is a subdomain
+	  of 'home.arpa.' is expected to have local significance.  It is expected to be returned
+	  by a server involved in name resolution for the homenet the device is connected in.
 	  However, such response MUST NOT be considered more trustworthy than would be a similar
 	  response for any other DNS query.
 	</t>
