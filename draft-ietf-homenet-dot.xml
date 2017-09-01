@@ -77,9 +77,8 @@
 	This document corrects an error in <xref target="RFC7788"/>, replacing '.home' with
 	'home.arpa.' as the default domain-name for homenets. '.home' had been selected as the
 	most user-friendly option.  However, there are existing uses of '.home' that may be in
-	conflict with this use: evidence indicates that queries for 'home.' and subdomains of
-	'home.' frequently leak out and reach the root name servers <xref target="ICANN1"/>
-	<xref target="ICANN2"/>.
+	conflict with this use: evidence indicates that '.home' queries frequently leak out and
+	reach the root name servers <xref target="ICANN1"/> <xref target="ICANN2"/>.
       </t>
 
       <t>
